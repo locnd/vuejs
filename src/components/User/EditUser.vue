@@ -54,10 +54,10 @@
 </template>
 
 <script>
-import UserService from "../services/UserService";
+import UserService from "@/services/UserService";
 
 export default {
-  name: "tutorial",
+  name: "edit_user",
   data() {
     return {
       currentTutorial: null,

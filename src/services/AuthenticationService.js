@@ -1,6 +1,5 @@
 import LocalStorageService from '@/services/LocalStorageService';
-import api from "@/api";
-import axios from 'axios';
+import http from "@/services/HttpService";
 
 class AuthenticationService {
     ACCESS_TOKEN_KEY = 'access_token';
@@ -25,12 +24,8 @@ class AuthenticationService {
         return this.currentUser;
     }
 
-    updateAxiosHeader() {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.getAccessToken()}`;
-    }
-
     saveAuthenticationData(data) {
-        this.updateAccessToken(data.token);
+        this.saveAccessToken(data.token);
         this.saveCurrentUser(data.user);
     }
 
@@ -39,10 +34,9 @@ class AuthenticationService {
         this.currentUser = currentUser;
     }
 
-    updateAccessToken(accessToken) {
+    saveAccessToken(accessToken) {
         LocalStorageService.saveItem(this.ACCESS_TOKEN_KEY, accessToken);
         this.accessToken = accessToken;
-        this.updateAxiosHeader();
     }
 
     removeAuthenticationData() {
@@ -50,15 +44,12 @@ class AuthenticationService {
         LocalStorageService.removeItem(this.CURRENT_USER_KEY);
         this.accessToken = '';
         this.currentUser = false;
-        this.updateAxiosHeader();
     }
 
     loadData() {
         this.accessToken = LocalStorageService.getItem(this.ACCESS_TOKEN_KEY) || '';
         this.currentUser = LocalStorageService.getItem(this.CURRENT_USER_KEY) || false;
         this.dataLoaded = true;
-        console.log(this.accessToken);
-        this.updateAxiosHeader();
     }
 
     loadDataIfNeed() {
@@ -68,7 +59,7 @@ class AuthenticationService {
     }
 
     async login(auth) {
-        let res = await api.post("/login", auth);
+        let res = await http.post("/login", auth);
         this.saveAuthenticationData(res.data);
     }
 

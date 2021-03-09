@@ -1,8 +1,10 @@
-import api from "@/api";
+import api from "@/services/ApiService";
 
 class UserService {
-    getAll() {
-        return api.get("/users");
+    getAll(params) {
+        return api.get("/users", {
+            params: params
+        });
     }
 
     get(id) {

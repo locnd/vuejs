@@ -16,7 +16,7 @@ export default new Router({
         {
             path: "/login",
             name: "login",
-            component: () => import("./components/Login"),
+            component: () => import("./components/Auth/Login"),
             beforeEnter: (to, from, next) => {
                 if (AuthenticationService.isAuthenticated()) {
                     next('/');
@@ -27,12 +27,12 @@ export default new Router({
         {
             path: "/logout",
             name: "logout",
-            component: () => import("./components/Logout")
+            component: () => import("./components/Auth/Logout")
         },
         {
             path: "/users",
             name: "list_users",
-            component: () => import("./components/ListUsers"),
+            component: () => import("./components/User/ListUsers"),
             beforeEnter: (to, from, next) => {
                 if (!AuthenticationService.isAuthenticated()) {
                     next('/login');
@@ -43,7 +43,7 @@ export default new Router({
         {
             path: "/users/create",
             name: "create_user",
-            component: () => import("./components/CreateUser"),
+            component: () => import("./components/User/CreateUser"),
             beforeEnter: (to, from, next) => {
                 if (!AuthenticationService.isAuthenticated()) {
                     next('/login');
@@ -53,8 +53,8 @@ export default new Router({
         },
         {
             path: "/users/:id",
-            name: "show_user",
-            component: () => import("./components/ShowUser"),
+            name: "edit_user",
+            component: () => import("./components/User/EditUser"),
             beforeEnter: (to, from, next) => {
                 if (!AuthenticationService.isAuthenticated()) {
                     next('/login');

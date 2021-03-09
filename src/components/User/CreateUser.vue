@@ -35,10 +35,10 @@
 </template>
 
 <script>
-import UserService from "../services/UserService";
+import UserService from "@/services/UserService";
 
 export default {
-  name: "add-tutorial",
+  name: "create_user",
   data() {
     return {
       tutorial: {
@@ -67,7 +67,7 @@ export default {
           console.log(e);
         });
     },
-    
+
     newTutorial() {
       this.submitted = false;
       this.tutorial = {};

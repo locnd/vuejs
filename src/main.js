@@ -1,19 +1,13 @@
 import Vue from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
-import AuthenticationService from "@/services/AuthenticationService";
 
 Vue.config.productionTip = false;
 
+import AuthenticationService from "@/services/AuthenticationService";
 Vue.prototype.$global = {
     isAuthenticated: AuthenticationService.isAuthenticated(),
 };
-
-Vue.prototype.requireAuthentication = function() {
-    if (!this.$global.isAuthenticated) {
-        this.$router.push('/login');
-    }
-}
 
 new Vue({
   router,

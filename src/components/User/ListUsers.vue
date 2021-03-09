@@ -6,7 +6,7 @@
                        v-model="search"/>
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button"
-                            @click="search"
+                            @click="getUsers"
                     >
                         Search
                     </button>
@@ -20,7 +20,7 @@
                     :class="{ active: index == currentIndex }"
                     v-for="(user, index) in users"
                     :key="index"
-                    @click="setcurrentUser(user, index)"
+                    @click="setCurrentUser(user, index)"
                 >
                     {{ user.full_name }}
                 </li>
@@ -28,7 +28,7 @@
         </div>
         <div class="col-md-6">
             <div v-if="currentUser">
-                <h4>user</h4>
+                <h4>User</h4>
                 <div>
                     <label><strong>Full name:</strong></label> {{ currentUser.full_name }}
                 </div>
@@ -39,7 +39,7 @@
                     <label><strong>Status:</strong></label> {{ currentUser.status }}
                 </div>
 
-                <router-link :to="'/users/' + currentUser.id" class="badge badge-warning">Edit</router-link>
+                <router-link :to="'/users/' + currentUser.id" class="badge badge-warning edit-btn">Edit</router-link>
             </div>
             <div v-else>
                 <br/>
@@ -50,24 +50,30 @@
 </template>
 
 <script>
-
 import UserService from "@/services/UserService";
 
 export default {
-    name: "users-list",
+    name: "list_users",
     data() {
         return {
             users: [],
             currentUser: null,
             currentIndex: -1,
+            search: '',
         };
     },
     methods: {
         getUsers() {
-            UserService.getAll().then(function (data) {
-                console.log(data);
+            UserService.getAll({
+                search: this.search
+            }).then((res) => {
+                this.users = res.data.data;
             });
         },
+        setCurrentUser(user, index) {
+            this.currentUser = user;
+            this.currentIndex = index;
+        }
     },
     mounted() {
         this.getUsers();
@@ -80,5 +86,10 @@ export default {
     text-align: left;
     max-width: 750px;
     margin: auto;
+}
+.edit-btn {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: white;
 }
 </style>

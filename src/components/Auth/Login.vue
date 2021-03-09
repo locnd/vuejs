@@ -53,7 +53,7 @@ export default {
         },
 
         async login() {
-            if (!AuthenticationService.isAuthenticated()) {
+            if (!this.$global.isAuthenticated) {
                 await AuthenticationService.login(this.auth)
                     .then(() => {
                         this.$global.isAuthenticated = true;
@@ -62,6 +62,8 @@ export default {
                     .catch(e => {
                     console.log(e.response.data);
                 });
+            } else {
+                this.$router.push('/');
             }
         }
     }
