@@ -22,14 +22,6 @@ class UserService {
     delete(id) {
         return api.delete(`/users/${id}`);
     }
-
-    deleteAll() {
-        return api.delete(`/users`);
-    }
-
-    findByTitle(title) {
-        return api.get(`/users?title=${title}`);
-    }
 }
 
 export default new UserService();

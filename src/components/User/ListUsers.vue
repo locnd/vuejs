@@ -24,6 +24,7 @@
                 >
                     {{ user.full_name }}
                 </li>
+                <router-link :to="'/users/create'" class="badge badge-primary edit-btn" style="margin-top: 10px">Create</router-link>
             </ul>
         </div>
         <div class="col-md-6">
@@ -40,9 +41,9 @@
                 </div>
 
                 <router-link :to="'/users/' + currentUser.id" class="badge badge-warning edit-btn">Edit</router-link>
+                <button @click="deleteUser" class="badge badge-danger edit-btn" style="border: none;margin-left: 10px;">Delete</button>
             </div>
             <div v-else>
-                <br/>
                 <p>Click to view user detail...</p>
             </div>
         </div>
@@ -69,6 +70,15 @@ export default {
             }).then((res) => {
                 this.users = res.data.data;
             });
+        },
+        deleteUser() {
+            if (confirm('Are you sure to delete user "' + this.currentUser.full_name+'" ?')) {
+                UserService.delete(this.currentUser.id).then(() => {
+                    this.users.splice(this.currentIndex, 1);
+                    this.currentUser = null;
+                    this.currentIndex = -1;
+                });
+            }
         },
         setCurrentUser(user, index) {
             this.currentUser = user;
